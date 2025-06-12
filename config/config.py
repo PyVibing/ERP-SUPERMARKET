@@ -1,0 +1,11 @@
+# Colores base
+BG_COLOR = "#f4f4f4"
+CARD_BG = "#ffffff"
+TEXT_COLOR = "#1e293b"
+ACCENT_GREEN = "#10b981"
+RED = "#f43f5e"
+BLUE = "#112b55"
+YELLOW = '#f59e0b'
+SIDEBAR_COLOR = "#1f2937"
+SIDEBAR_TEXT = "#ffffff"
+SIDEBAR_FOCUS_COLOR_BTN = "#1f4a90"
