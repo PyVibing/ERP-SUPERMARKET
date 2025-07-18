@@ -32,7 +32,7 @@ class ProviderDAO:
                     cursor.executemany("DELETE FROM providers WHERE id=%s", (values))
                 connection.commit()
                 return True
-        except IntegrityError as e:
+        except IntegrityError as e: 
             return "IntegrityError"
         except Exception as e:
             print(e)

@@ -1,2 +1,5 @@
 .env
 env-tk/
+ERP_SUPERMARKET 1.1/
+__pycache__/
+*.pyc

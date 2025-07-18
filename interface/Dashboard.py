@@ -470,7 +470,6 @@ class Dashboard(tk.Frame):
         if month_sales:
             month_sales = dict(sorted(month_sales.items(), key=lambda item: item[1], reverse=True))
             month_sales = dict(list(month_sales.items())[:5])
-
         
         year_sales = {}
         date_range_year = (first_day_year, last_day_year)
@@ -490,17 +489,22 @@ class Dashboard(tk.Frame):
         sizes_1 = list(month_sales.values())
 
         labels_2 = list(year_sales.keys())
-        labels_2 = labels_2[6:10]
+        labels_2 = labels_2[:5]
         sizes_2 = list(year_sales.values())
 
         # Colors
         colors = [
             "#3366CC", "#F50A0A", "#E3D403", "#00C90D", "#CE00CE"
         ]
-        colors = colors[:len(max(labels_1, labels_2))]
-
+        if labels_1 and labels_2:
+            colors = colors[:max(len(labels_1), len(labels_2))]
+        elif labels_2 and not labels_1:
+            colors = colors[:len(labels_2)]
+        else:
+            colors = None
+            
         # Create figures
-        fig_1 = Figure(figsize=(1.6, 1.6), dpi=100)
+        fig_1 = Figure(figsize=(1.3, 1.3), dpi=100)
         fig_1.patch.set_alpha(0)
         fig_1.subplots_adjust(left=0, right=1, top=1, bottom=0)
 
@@ -518,7 +522,6 @@ class Dashboard(tk.Frame):
         )
 
         ax_1.axis("equal")
-
 
         fig_2 = Figure(figsize=(1.6, 1.6), dpi=100)
         fig_2.patch.set_alpha(0)
@@ -543,7 +546,7 @@ class Dashboard(tk.Frame):
         canvas_widget_1 = FigureCanvasTkAgg(fig_1, master=self.dashboard_main_frame)
         canvas_widget_1.draw()
         widget_1 = canvas_widget_1.get_tk_widget()
-        widget_1.place(x=880, y=280)
+        widget_1.place(x=780, y=310)
         widget_1.config(highlightthickness=0)
 
          
@@ -553,17 +556,31 @@ class Dashboard(tk.Frame):
         widget_2.place(x=1080, y=280)
         widget_2.config(highlightthickness=0)
 
-    
-        # Crear leyenda
-        legend_frame = tk.Frame(self.dashboard_main_frame, bg=self.dashboard_main_frame["bg"])
-        legend_frame.place(x=700, y=320)
 
-        for i, label in enumerate(labels_1):
-            color = colors[i]
-            item_frame = tk.Frame(legend_frame, bg=self.dashboard_main_frame["bg"])
-            item_frame.pack(anchor='w', pady=1)
-            tk.Label(item_frame, width=2, height=1, bg=color).pack(side="left", padx=(0, 5))
-            tk.Label(item_frame, text=label, font=("Arial", 8), bg=self.dashboard_main_frame["bg"]).pack(side="left")
+        # Crear leyenda ventas mensuales
+        legend_frame_month = tk.Frame(self.dashboard_main_frame, bg=self.dashboard_main_frame["bg"])
+        legend_frame_month.place(x=700, y=320)
+
+        if labels_1:
+            for i, label in enumerate(labels_1):
+                color = colors[i]
+                item_frame = tk.Frame(legend_frame_month, bg=self.dashboard_main_frame["bg"])
+                item_frame.pack(anchor='w', pady=1)
+                tk.Label(item_frame, width=2, height=1, bg=color).pack(side="left", padx=(0, 5))
+                tk.Label(item_frame, text=label, font=("Arial", 8), bg=self.dashboard_main_frame["bg"]).pack(side="left")
+
+    
+        # Crear leyenda ventas anuales
+        legend_frame_year = tk.Frame(self.dashboard_main_frame, bg=self.dashboard_main_frame["bg"])
+        legend_frame_year.place(x=980, y=320)
+
+        if labels_2:
+            for i, label in enumerate(labels_2):
+                color = colors[i]
+                item_frame = tk.Frame(legend_frame_year, bg=self.dashboard_main_frame["bg"])
+                item_frame.pack(anchor='w', pady=1)
+                tk.Label(item_frame, width=2, height=1, bg=color).pack(side="left", padx=(0, 5))
+                tk.Label(item_frame, text=label, font=("Arial", 8), bg=self.dashboard_main_frame["bg"]).pack(side="left")
 
     def show_year_gross_income(self):
         year = datetime.now().year
@@ -597,11 +614,10 @@ class Dashboard(tk.Frame):
                 months_sales[j] = Decimal(month_total).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
         # Primero, borra cualquier gráfico anterior (si lo hay)
-        # if hasattr(self, 'income_graph_widget'):
-        #     self.income_graph_widget.get_tk_widget().destroy()
-        #     self.income_graph_widget = None 
-
-
+        if hasattr(self, 'income_graph_widget'):
+            self.income_graph_widget.get_tk_widget().destroy()
+            self.income_graph_widget = None 
+    
         # Datos
         month_names = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", 
             "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]

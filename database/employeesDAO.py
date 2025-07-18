@@ -1,4 +1,4 @@
-
+from mysql.connector import IntegrityError
 
 class EmployeesDAO:
 
@@ -191,6 +191,8 @@ class EmployeesDAO:
                     cursor.executemany("DELETE FROM employees WHERE id=%s", id_list)
                 connection.commit()
                 return True
+        except IntegrityError as e:
+            return "IntegrityError"
         except Exception as e:
             print(e)
             return None

@@ -343,13 +343,16 @@ class Product(tk.Frame):
         def delete_lost_product():
             id_rows = self.lost_products_tree.selection()
             if not id_rows:
-                messagebox.showerror(title="Registro no seleccionado", message="Debe seleccionar un registro de merma para eliminarlo.")
+                messagebox.showerror(title="Registro no seleccionado", message="Debe seleccionar un registro de merma para eliminarlo.",
+                                     parent=popup)
                 return
             
             if len(id_rows) < 2:
-                confirmation = messagebox.askyesno("Confirmar", "¿Estás seguro de que quieres eliminar este registro de merma?")
+                confirmation = messagebox.askyesno("Confirmar", "¿Estás seguro de que quieres eliminar este registro de merma?",
+                                                   parent=popup)
             else:
-                confirmation = messagebox.askyesno("Confirmar", f"¿Estás seguro de que quieres eliminar estos {len(id_rows)} registros de merma?")
+                confirmation = messagebox.askyesno("Confirmar", f"¿Estás seguro de que quieres eliminar estos {len(id_rows)} registros de merma?",
+                                                   parent=popup)
 
             if confirmation:
                 lost_prod_id = []
@@ -359,10 +362,13 @@ class Product(tk.Frame):
                     lost_prod_id.append(values[0])
                 deleted = product_dao.delete_lost_product(lost_prod_id)
                 if deleted == "IntegrityError":
-                    messagebox.showerror(title="Error al eliminar el registro", message="Ocurrió un IntegrityError")
+                    messagebox.showerror(title="Error al eliminar el registro", 
+                                         message="No puede eliminar un registro que tenga registros asociados.",
+                                         parent=popup)
                     return
                 if not deleted:
-                    messagebox.showerror(title="Error al eliminar el registro", message="Ocurrió una excepción al intentar borrar el registro")
+                    messagebox.showerror(title="Error al eliminar el registro", message="Ocurrió una excepción al intentar borrar el registro",
+                                         parent=popup)
                     return
                 if deleted:
                     popup.destroy()

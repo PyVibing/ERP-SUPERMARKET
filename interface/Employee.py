@@ -249,6 +249,15 @@ class Employee(tk.Frame):
             id = int(self.tree_empleados.item(item, "values")[0])
             employees_id.append((id,))
         deleted = employees_dao.delete_employee(employees_id)
+        if deleted == "IntegrityError":
+            if len(selection) < 2:
+                messagebox.showerror(title="Error al eliminar empleado", 
+                                     message="No puede eliminar a un empleado mientras tenga algún registro de venta, merma, etc. asociado.")
+            else:
+                messagebox.showerror(title="Error al eliminar empleado", 
+                                     message="No puede eliminar a un empleado mientras tenga algún registro de venta, merma, etc. asociado.")
+            return
+        
         if not deleted:
             if len(selection) < 2:
                 messagebox.showerror(title="Error al eliminar empleado", 

@@ -351,7 +351,7 @@ class Provider(tk.Frame):
             if len(selection) < 2:
                 if deleted == "IntegrityError":
                     messagebox.showerror(title="No se puede eliminar el proveedor", 
-                                        message="No puede eliminarse este proveedor mientras existan registros de productos o ventas asociados a este."
+                                        message="No puede eliminarse este proveedor mientras existan registros de productos asociados a este."
                                         "Intente eliminar primero estos registros si quiere continuar con la eliminación de este proveedor.")
                     return
 
@@ -364,7 +364,7 @@ class Provider(tk.Frame):
             else:
                 if deleted == "IntegrityError":
                     messagebox.showerror(title="No se puede eliminar el proveedor", 
-                                        message="No puede eliminarse uno o más de los proveedores seleccionados mientras existan registros de productos o ventas " \
+                                        message="No puede eliminarse uno o más de los proveedores seleccionados mientras existan registros de productos " \
                                         "asociados a este. Intente eliminar uno a uno para identificar el/los proveedor(es) que no puede(n) eliminarse.")
                     return
 

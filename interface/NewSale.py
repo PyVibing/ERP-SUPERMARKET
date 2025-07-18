@@ -327,7 +327,8 @@ class NewSale(tk.Frame): #DUPLICAR LUEGO PARA *** NUEVA COMPRA ***
         else:
             sales_by_date_in_bbdd = sales_dao.get_sales_by_date(date=sale_date)
             if sales_by_date_in_bbdd is None:
-                messagebox.showinfo(title="No hay ventas registradas", message="No hay ningún registro de venta con la fecha seleccionada para mostrar.")
+                messagebox.showinfo(title="No hay ventas registradas", 
+                                    message="No hay ningún registro de venta con la fecha seleccionada para mostrar.")
                 # If no sales to filter, show all sales by default
                 self.all_sales()
                 return
@@ -362,13 +363,17 @@ class NewSale(tk.Frame): #DUPLICAR LUEGO PARA *** NUEVA COMPRA ***
         def delete_sale():
             selection = self.tree_sales_history.selection()
             if not selection:
-                messagebox.showerror(title="Seleccione un registro", message="Debe seleccionar un registro de venta para ser eliminado.")
+                messagebox.showerror(title="Seleccione un registro", message="Debe seleccionar un registro de venta para ser eliminado.",
+                                     parent=popup)
                 return
             
             if len(selection) < 2:
-                confirm = messagebox.askokcancel(title="Eliminar venta", message="¿Estás seguro de querer eliminar este registro de venta?")
+                confirm = messagebox.askokcancel(title="Eliminar venta", message="¿Estás seguro de querer eliminar este registro de venta?",
+                                                 parent=popup)
             else:
-                confirm = messagebox.askokcancel(title="Eliminar venta", message=f"¿Estás seguro de querer eliminar estos {len(selection)} registros de venta?")
+                confirm = messagebox.askokcancel(title="Eliminar venta", 
+                                                 message=f"¿Estás seguro de querer eliminar estos {len(selection)} registros de venta?",
+                                                 parent=popup)
             
             if confirm:
                 sales_id = []
@@ -383,7 +388,8 @@ class NewSale(tk.Frame): #DUPLICAR LUEGO PARA *** NUEVA COMPRA ***
                     if len(selection) < 2:
                         messagebox.showinfo(title="Registro eliminado", message="Se eliminó el registro de venta seleccionado.")
                     else:
-                        messagebox.showinfo(title="Registros eliminados", message=f"Se eliminaron los {len(selection)} registros de venta seleccionados.")
+                        messagebox.showinfo(title="Registros eliminados", 
+                                            message=f"Se eliminaron los {len(selection)} registros de venta seleccionados.")
                     
                     if len(sales_by_date_in_bbdd) != len(sales_id):
                         self.all_sales()
